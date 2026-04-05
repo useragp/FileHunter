@@ -3,16 +3,16 @@ import os
 def check_word(word):
     if len(word) == 0:      # pusta wartość słowa
         print("BŁĄD!!\t co chcesz wyszukać? :(")
-        return 1
+        return True
 
     if " " in word:         # więcej niż jedno słowo
         print("BŁĄD!!\t możesz wpisać tylko jedno słowo :(")
-        return 1
+        return True
 
     for literka in word:
         if not(literka.isalnum() ): #or literka.isdigit()):
             print("BŁĄD!!\t błędna literka :(")
-            return 1
+            return True 
     return 0
 
 def create_path(path):
@@ -28,11 +28,11 @@ def check_path(path):
         return 0
     else:
         create_path_decision = input("Ścieżka nie istnieje, czy chcesz ją stworzyć? (T\\N) \n")
-        if create_path_decision == ("T" or "t"):
+        if create_path_decision.upper() == "T":
             path = os.path.normpath(path)
             create_path(path)
             return 0
-        elif create_path_decision == ("N" or "n"):
+        elif create_path_decision.upper() == "N":
             print("\n\nOK BYE! ")
             return 1 #koniec zainicjowany przez użytkownika
         else:
@@ -48,7 +48,7 @@ def list_dir(root, slowo):
             if os.path.isdir(path):
                 list_dir(path, slowo)
             else:
-                if slowo in path:
+                if slowo in os.path.basename(path):
                     result.append(path)
         return result
 
@@ -57,7 +57,6 @@ def list_dir(root, slowo):
     except FileNotFoundError:
         pass
 
-# def validate_input(theinput):
 
 
 def main():
@@ -71,7 +70,7 @@ def main():
         # input validation - int
         try:
             all_files = int(input("Chcesz sprawdzić:\n[1] każdy plik w systemie (domyślnie - potrwa dłużej), czy\n[2] z konretnego folderu?:\n"))
-        except:
+        except ValueError:
             print("Nie jest to liczbą!")
             return 1
         root = os.path.abspath(os.sep)
@@ -88,8 +87,14 @@ def main():
 
 
         for file in file_paths:
-            os.replace(file, f"{dst_path}\\{os.path.basename(file)}")
-            print(file, f"\t\t{dst_path}\\{os.path.basename(file)}")
+            target = os.path.join(dst_path, os.path.basename(file))
+            if not os.path.exists(target):
+                os.replace(file, target)
+                print(file, " --> ", target)
+            else:
+               print("Plik: ", file, "już istnieje, POMIJAM !!")
+
+
 
         print("\n\n----------------- KONIEC")
     except KeyboardInterrupt:
