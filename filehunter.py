@@ -1,11 +1,11 @@
 import os
 # przenoszenie plików z określonym słowem w nazwie do podanego folderu
 def check_word(word):
-    if len(word) == 0:
+    if len(word) == 0:      # pusta wartość słowa
         print("BŁĄD!!\t co chcesz wyszukać? :(")
         return 1
 
-    if " " in word:
+    if " " in word:         # więcej niż jedno słowo
         print("BŁĄD!!\t możesz wpisać tylko jedno słowo :(")
         return 1
 
@@ -19,9 +19,9 @@ def create_path(path):
     try:
         os.mkdir(path)
     except PermissionError:
-        print("BŁĄD!! brak uprawnień :(")
+        print("\nBŁĄD!! brak uprawnień :(")
     except OSError as e:
-        print(f"Inny błąd: {e}")
+        print(f"\nInny błąd: {e}")
 
 def check_path(path):
     if os.path.exists(path):
@@ -29,11 +29,18 @@ def check_path(path):
     else:
         create_path_decision = input("Ścieżka nie istnieje, czy chcesz ją stworzyć? (T\\N) \n")
         if create_path_decision == ("T" or "t"):
+            path = os.path.normpath(path)
             create_path(path)
             return 0
-        else: return  #koniec zainicjowany przez użytkownika
+        elif create_path_decision == ("N" or "n"):
+            print("\n\nOK BYE! ")
+            return 1 #koniec zainicjowany przez użytkownika
+        else:
+            print("\nNie rozumiem, BYEE")
+            return 1
 
 def list_dir(root, slowo):
+    result = []
     try:
         for file in os.listdir(root):
             path = os.path.join(root, file)
@@ -42,29 +49,49 @@ def list_dir(root, slowo):
                 list_dir(path, slowo)
             else:
                 if slowo in path:
-                    print(path)
+                    result.append(path)
+        return result
+
     except PermissionError:
-        pass
+        pass    # pomija
     except FileNotFoundError:
         pass
+
+# def validate_input(theinput):
 
 
 def main():
     try:
         slowo = str(input("Podaj slowo, jakie ma znajdowac sie w nazwie pliku:\n"))
-        # print("1 print:\t", check_word(slowo))
-        if check_word(slowo) != 0:
+        if check_word(slowo): return 1
+
+        dst_path = str(input("Podaj docelowy folder (domyślny - bieżący):\n"))
+        if check_path(dst_path) : return 1
+
+        # input validation - int
+        try:
+            all_files = int(input("Chcesz sprawdzić:\n[1] każdy plik w systemie (domyślnie - potrwa dłużej), czy\n[2] z konretnego folderu?:\n"))
+        except:
+            print("Nie jest to liczbą!")
             return 1
-        dst_path = input("Podaj docelowy folder:\n")
-        if check_path(dst_path) != 0:
-            return 1
-        all_files = int(input("Chcesz sprawdzić:\n[1] każdy plik w systemie (domyślnie - potrwa dłużej), czy\n[2] z konretnego folderu?:\n"))
         root = os.path.abspath(os.sep)
+
         if all_files == 2:
             path = str(input("Podaj ścieżkę:\n"))
-            root = os.path.normpath(path)
+            if os.path.exists(path) and os.path.isdir(path):
+                root = os.path.normpath(path)
+            else:
+                print("Podana ścieżka nie istnieje lub nie jest ścieżką folderu :(")
+                return 1
 
-        print(list_dir(root, slowo))
+        file_paths = (list_dir(root, slowo))
+
+
+        for file in file_paths:
+            os.replace(file, f"{dst_path}\\{os.path.basename(file)}")
+            print(file, f"\t\t{dst_path}\\{os.path.basename(file)}")
+
+        print("\n\n----------------- KONIEC")
     except KeyboardInterrupt:
         print("===== BYE BYE =====")
 
