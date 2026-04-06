@@ -63,6 +63,19 @@ def get_word():
     except KeyboardInterrupt:
         print("===== BYE BYE =====")
 
+def get_path():
+    try:
+        print_or_move = int(input("Chcesz:\n[1] tylko przenieść,\n[2] tylko wyświetlić,\n[3] czy przenieść i wyświetlić pliki (domyślnie)??\n"))
+        if print_or_move != 2:
+            while True:
+                dst_path = str(input("Podaj docelowy folder - do którego mają zostać przeniesione znalezione pliki (domyślny - bieżący):\n"))
+                if not check_path(dst_path): break      # jeśli check_path nie zwrwaca błędu - break
+            return dst_path
+        else:
+            return 0
+    except KeyboardInterrupt:
+        print("===== BYE BYE =====")
+
 def main():
     try:
         while True:
