@@ -53,6 +53,14 @@ def list_dir(root, slowo):
     except FileNotFoundError:
         pass
 
+def get_word():
+    try:
+        while True:
+            slowo = input("Podaj slowo, jakie ma znajdowac sie w nazwie pliku:\n")
+            if not check_word(slowo): break
+        return slowo
+    except KeyboardInterrupt:
+        print("===== BYE BYE =====")
 
 def main():
     try:
