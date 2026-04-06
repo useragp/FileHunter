@@ -1,12 +1,43 @@
-# FileHunter - IN PROGRESS
-FileHunter CLI is a Python-based command-line tool for searching, previewing, and relocating files based on keywords in their filenames.
+# 📂 FileHunter CLI
 
-### 🔍 Description
+FileHunter CLI to lekkie narzędzie w Pythonie działające w terminalu, służące do wyszukiwania plików na podstawie słów kluczowych w nazwach oraz opcjonalnego przenoszenia ich do wybranego folderu.
 
-The application scans directories and identifies files whose names contain a specified keyword. In addition to moving files, it allows the user to preview matching results directly in the terminal before taking action.
+## 🔍 Opis
 
-This makes it useful for:
+Program przeszukuje foldery rekurencyjnie i identyfikuje pliki, których nazwy zawierają podane słowo kluczowe.
 
-- organizing files efficiently
-- reviewing matches before moving them
-- automating file cleanup tasks
+Użytkownik może:
+
+- wyświetlić ścieżki do dopasowanych plików w terminalu
+- przenieść dopasowane pliki do wskazanego folderu
+## ✅ Zastosowania
+- efektywna organizacja plików
+- bezpieczne przeglądanie wyników przed przeniesieniem plików
+- automatyzacja powtarzalnych zadań związanych z zarządzaniem plikami
+
+## ▶️ Uruchomienie
+Pobierz repozytorium:
+ ```bash
+git clone https://github.com/twoj-login/FileHunter.git
+```
+Przejdź do folderu projektu:
+```bash
+cd FileHunter
+```
+Uruchom program:
+```bash
+python main.py
+```
+
+## ⚡ Funkcjonalności
+- przeszukiwanie folderów rekurencyjnie
+- dopasowanie nazw plików bez uwzględniania wielkości liter
+- opcjonalne przenoszenie plików
+- obsługa błędów (brak uprawnień, nieistniejące ścieżki)
+- walidacja danych wejściowych
+## 📌 Uwagi
+- Przeszukiwanie całego systemu może trwać długo
+- Niektóre foldery mogą zostać pominięte z powodu braku uprawnień
+- Pliki o tej samej nazwie nie są nadpisywane
+## 👩‍💻 Autor
+Projekt stworzony w celach edukacyjnych
