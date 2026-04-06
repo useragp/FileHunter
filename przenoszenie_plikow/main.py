@@ -56,6 +56,7 @@ def list_dir(root, slowo):
 
 def main():
     try:
+        while True:
         slowo = str(input("Podaj slowo, jakie ma znajdowac sie w nazwie pliku:\n"))
         if check_word(slowo): return 1
 
