@@ -28,7 +28,8 @@ def check_path(path):
         return 0
     else:
         create_path_decision = input("Ścieżka nie istnieje, czy chcesz ją stworzyć? (T\\N) \n")
-        if create_path_decision == ("T" or "t"):
+        if create_path_decision.upper() == "T":
+            path = os.path.normpath(path)
             create_path(path)
             return 0
         else:
