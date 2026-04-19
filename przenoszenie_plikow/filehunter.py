@@ -85,7 +85,6 @@ def get_path(path, if_not_exist):
         print(f"Błąd: {e}")
         return False
 
-
 #------------------------PRZENOSZENIE / WYŚWIETLANIE PLIKÓW -----------------------------------------------
 def move_file(dst_path, path):
     # przenosi znaleziony plik (path) do wybranego folderu (dst_path)
