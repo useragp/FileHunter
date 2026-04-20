@@ -1,12 +1,12 @@
 import os
 import argparse
-# (przenoszenie lub ) wyświetlanie ścieżek plików, z określonym słowem w nazwie, (do podanego folderu)
-# Logika : False - błąd, True - brak błędu
+# (przenoszenie lub) wyświetlanie ścieżek plików, z określonym słowem w nazwie, (do podanego folderu)
+# Logika: False - błąd, True- brak błędu
 
 
 #--------------------  WORD  - SŁOWO ---------------------------------------------------
-def check_word(word):
-    # sprawdza czy podane słowo nie jest puste, oraz czy składa się z literek (oraz cyfr) - czy podany string jest słowem.
+def check_word(word:str):
+    # Sprawdza, czy podane słowo nie jest puste, oraz czy składa się z literek (oraz cyfr) - czy podany string jest słowem.
 
     if len(word) == 0:      # pusta wartość słowa
         print(f"{red("BŁĄD!!")}\twpisz jakie słowo chcesz wyszukać")
@@ -21,9 +21,9 @@ def check_word(word):
 
 
 #------------------------FOLDER OD KTÓREGO ROZPOCZYNA SIĘ PRZESZUKIWANIE -----------------------------------------------
-def get_root(path):
-    # zwraca "root" - początkowy folder, od którego rozpoczyna wyszukiwanie
-    # domyślnie jest to główny folder w systemie - (np. Windows - C:)
+def get_root(path:str):
+    # Zwraca "root" - początkowy folder, od którego rozpoczyna się wyszukiwanie
+    # Domyślnie, jest to główny folder w systemie - (np. Windows- C:)
     r = os.path.abspath(os.sep)
     try:
 
@@ -43,7 +43,7 @@ def get_root(path):
         return False
 
 # -----------------------ŚCIEŻKA DO KTÓREJ MAJĄ ZOSTAĆ PRZENIESIONE PLIKI  // --move is on ------------------------------------------------
-def create_path(path):
+def create_path(path:str):
     try:
         os.makedirs(path, exist_ok=True)
         return True
@@ -54,28 +54,28 @@ def create_path(path):
         print(f"\nInny błąd: {e}")
         return False
 
-def check_path(path, if_not_exist):
+def check_path(path:str, if_not_exist:bool):
     if os.path.exists(path):
         return True  # jeśli podana ścieżka istnieje = "brak błędów"
-    else:  # jeśli podana ścieżka nie isnieje
+    else:  # jeśli podana ścieżka nie istnieje
         if if_not_exist:
             path = os.path.normpath(path)  # normalizuje podaną ścieżkę
             return create_path(path)
 
         else:
-            print(f"\nThe destination path doesn't exist. \nIf you still want to move files - create one or add {red("--create-path")} argument :)  \n\nBYEEE !! ")
+            print(f"\nThe destination path doesn't exist. \nIf you still want to move files - create one or add {red("--create-path")} argument :)  \n\nBYE !! ")
                   # koniec zainicjowany przez użytkownika
     return False  # koniec
 
-def get_path(path, if_not_exist):
+def get_path(path:str, if_not_exist:bool):
     try:
         check_dst_path = check_path(path, if_not_exist)
-        if check_dst_path: pass # jeśli check_path nie zwrwaca błędu - break
+        if check_dst_path: pass # jeśli check_path nie zwraca błędu- break
         else:
             return False
         return path
 
-        # każdy inny przypadek - tylko wyświetlenie ścieżek
+        # każdy inny przypadek- tylko wyświetlenie ścieżek
 
     except ValueError:
         print(" -> tylko wyświetlę ścieżki")
@@ -86,7 +86,7 @@ def get_path(path, if_not_exist):
         return False
 
 #------------------------PRZENOSZENIE / WYŚWIETLANIE PLIKÓW -----------------------------------------------
-def move_file(dst_path, path):
+def move_file(dst_path:str, path:str):
     # przenosi znaleziony plik (path) do wybranego folderu (dst_path)
     try:
         target = os.path.join(dst_path, os.path.basename(path))     # docelowy folder- tworzony jest plik o tej konkretnej nazwie
@@ -101,7 +101,7 @@ def move_file(dst_path, path):
         print(f"{red("Błąd:")} {e}")
         return False
 
-def list_dir(root, slowo, path_move, dst_path):
+def list_dir(root:str, slowo:str, path_move:bool, dst_path:str):
     try:
         for file in os.listdir(root):   # przez każdy plik zawarty w root
             path = os.path.join(root, file)     # absolutna ścieżka każdego pliku
@@ -129,8 +129,7 @@ def list_dir(root, slowo, path_move, dst_path):
         print(f"Błąd: {e}")
         return False
 
-
-def red(text):
+def red(text: str):
     print(f"\033[91m{text}\033[0m")
 
 def main():
@@ -149,7 +148,7 @@ def main():
         word = args.word
         if not word or not check_word(word): return 1     # jeśli błąd- return 1
 
-    # folder w którym mają zostać znalezione pliki
+    # folder, w którym mają zostać znalezione pliki
         src_path = args.src_path
         root = get_root(src_path)
         if not root: return 1
